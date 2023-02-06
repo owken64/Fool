@@ -5,10 +5,11 @@ abstract class Set[T]{
     val order: Num
 }
 
-abstract class FiniteSet[T]{
+abstract class FiniteSet[T] extends Set[T]{
 
 }
 
-abstract class InfiniteSet[T]{
+abstract class InfiniteSet[T] extends Set[T]{
+    def all:Seq[T] = throw new InfiniteException
     val order: Num = Infinity
 }
