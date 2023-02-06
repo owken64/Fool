@@ -1,0 +1,1 @@
+class Family[T] extends Set
