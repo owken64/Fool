@@ -13,3 +13,10 @@ abstract class InfiniteSet[T] extends Set[T]{
     def all:Seq[T] = throw new InfiniteException
     val order: Num = Infinity
 }
+
+object C extends InfiniteSet[Complex]
+object R extends InfiniteSet[Real]
+object Q extends InfiniteSet[Rational]
+object Z extends InfiniteSet[Integer]
+object N extends InfiniteSet[Natural]
+object P extends InfiniteSet[Prime]
