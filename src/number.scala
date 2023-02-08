@@ -10,6 +10,11 @@ object Complex {
 
 abstract class Real extends Complex
 
+abstract class Irrational extends Real
+
+abstract class Root extends Irrational
+abstract class Sqrt extends Root
+
 abstract class Rational extends Real
 
 abstract class Integer extends Rational
