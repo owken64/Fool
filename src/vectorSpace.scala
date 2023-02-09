@@ -1,1 +1,1 @@
-class VectorSpace 
+class VectorSpace[K <: Field, V](val plus: (V,V)=>V, val mul: (K, V)=>V ) extends Set

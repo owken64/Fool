@@ -1,1 +1,1 @@
-abstract class Tensor
+abstract class Tensor[V, Vstar] extends Function

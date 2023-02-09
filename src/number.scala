@@ -1,4 +1,4 @@
-abstract class Num
+abstract class Num extends Type0
 
 abstract class PAdicNumber extends Num
 

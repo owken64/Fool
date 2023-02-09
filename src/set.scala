@@ -1,17 +1,22 @@
-abstract class Set[T]{
+
+abstract class Set[T] extends Type1{
     def in (obj:Any):Boolean
     def all : Seq[T]
     def many: Seq[T]
     val order: Num
 }
 
-abstract class FiniteSet[T] extends Set[T]{
+trait FiniteSet{
 
 }
 
-abstract class InfiniteSet[T] extends Set[T]{
+trait InfiniteSet {
     def all:Seq[T] = throw new InfiniteException
     val order: Num = Infinity
+}
+
+object Set {
+    def apply[T <: Type0]( logic: T=> Boolean): Set[T] 
 }
 
 object C extends InfiniteSet[Complex]

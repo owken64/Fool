@@ -3,6 +3,6 @@ abstract class Point
 
 abstract class Line
 
-abstract class Membrane
+abstract class Plane
 
 abstract class Cube
