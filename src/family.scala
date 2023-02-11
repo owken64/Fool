@@ -1,1 +1,1 @@
-class Family[T] extends Set
+class Family[T] extends Type2
