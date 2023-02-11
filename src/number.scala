@@ -39,3 +39,6 @@ abstract class Integer extends Rational
 abstract class Natural extends Integer
 
 abstract class Prime extends Natural
+
+
+object Infinity extends Num
