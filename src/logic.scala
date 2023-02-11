@@ -1,10 +1,16 @@
 
 abstract class LogicalFormula{
     def eval:Boolean
+    def apply(): Boolean = eval
 }
 
-class PropositionalLetter(val c:Char) extends LogicalFormula{
+class PropositionalLetter(val c:Char, truth: Boolean) extends LogicalFormula{
+    def eval:Boolean = truth
+}
 
+class Predicate(val truth: Any => Boolean) extends LogicalFormula {
+    def eval: Boolean = ???
+    def apply(name:Any):Boolean = truth(name)
 }
 
 abstract class TruthFunction extends LogicalFormula{

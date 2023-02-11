@@ -1,10 +1,10 @@
 package type
 
-abstract class Type(val type: Int) extends Any {
-    require( type >= 0 , "type is larger equal than 0")
+abstract class Type(val t: Int){
+    require( t >= 0 , "type is larger equal than 0")
     
     def in(that:Type) :Boolean = {
-        if (this.type - that.type == 1) true
+        if (this.t - that.t == 1) true
         else false
     }
 }

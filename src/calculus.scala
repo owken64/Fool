@@ -1,8 +1,9 @@
 
+import scala.math
 var delta: Double = 0.001
 
 def isDifferentiable(f: Double=> Double)(x: Double): Boolean = {
-    ((f(x + delta) - f(x))/ delta) -  ((f(x-delta) - f(x) / -delta)) < delta
+    math.abs((f(x + delta) - f(x))/ delta) -  ((f(x-delta) - f(x) / -delta)) < delta
 }
 
 def differential(f: Double => Double)(x: Double): Double = {
