@@ -41,8 +41,13 @@ object Rational {
     }
 }
 
-abstract class Integer extends Rational
-class IntegerEntity(val value:Int) extends Integer
+abstract class Integer extends Rational {
+    def toInt: Int
+}
+
+class IntegerEntity(val value:Int) extends Integer {
+    def toInt: Int = value
+}
 
 object Integer {
     def apply(v:Int): Integer = {
@@ -53,6 +58,7 @@ object Integer {
 abstract class Natural extends Integer
 class NaturalEntity(val value: Int) extends Natural {
     require( value >= 0)
+    def toInt: Int = value
 }
 
 object Natural {
@@ -68,6 +74,7 @@ abstract class Prime extends Natural {
 }
 class PrimeEntity(val value:Int) extends Prime{
     require(isPrime(value))
+    def toInt: Int = value
 }
 
 object Prime{
