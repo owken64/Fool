@@ -33,12 +33,47 @@ abstract class Root extends Irrational
 abstract class Sqrt extends Root
 
 abstract class Rational extends Real
+class RationalEntity(val numer:Int, val denom:Int) extends Rational
+
+object Rational {
+    def apply(numer:Int, denom:Int): Rational = {
+        new RationalEntity(numer, denom)
+    }
+}
 
 abstract class Integer extends Rational
+class IntegerEntity(val value:Int) extends Integer
+
+object Integer {
+    def apply(v:Int): Integer = {
+        new IntegerEntity(v)
+    }
+}
 
 abstract class Natural extends Integer
+class NaturalEntity(val value: Int) extends Natural {
+    require( value >= 0)
+}
 
-abstract class Prime extends Natural
+object Natural {
+    def apply(v:Int): Natural = {
+        new NaturalEntity(v)
+    }
+}
 
+abstract class Prime extends Natural {
+    protected def isPrime(v: Int):Boolean = {
+        (v != 1) && (Range(2, v) forall ( x => (v % x != 0)))
+    }
+}
+class PrimeEntity(val value:Int) extends Prime{
+    require(isPrime(value))
+}
+
+object Prime{
+    def apply(v:Int): Prime = {
+        new PrimeEntity(v)
+    }
+}
 
 object Infinity extends Num
