@@ -3,7 +3,7 @@ package set
 
 abstract class Set[T <: Type0] extends Type1{
     def in (obj:Any):Boolean
-    def all : Seq[T]
+    def all : Option[Seq[T]] = None
     def almost: Seq[T] = Range(0, 10) map (_ => generate())
     protected def generate(): T
     override def equals(that: Any): Boolean
@@ -12,7 +12,6 @@ abstract class Set[T <: Type0] extends Type1{
 
 class TypeSet[T <: Type0] extends Set[T] {
     def in (obj:Any): Boolean = obj.isInstanceOf[T]
-    def all: Seq[T] = ???
     override def equals(that: Any): Boolean = that match {
         case _ : TypeSet[T] => true
         case _ => false
@@ -22,7 +21,6 @@ class TypeSet[T <: Type0] extends Set[T] {
 
 class LogicalSet[T <: Type0](val predicates: Seq[Predicate]) extends Set[T] {
     def in(obj:Any):Boolean = obj.isInstanceOf[T] && predicates.forall(p => p(obj))
-    def all: Seq[T] = ???
     override def equals(that: Any): Boolean = that match {
         case ls : LogicalSet[T] => this.predicates == ls.predicates
         case _ => false
@@ -35,7 +33,6 @@ trait FiniteSet[T <: Type0] extends Set[T] {
 }
 
 trait InfiniteSet[T <: Type0] extends Set[T] {
-    def all:Seq[T] = throw new InfiniteException
     val order: Num = Infinity
 }
 
