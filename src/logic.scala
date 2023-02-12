@@ -8,9 +8,9 @@ class PropositionalLetter(val c:Char, truth: Boolean) extends LogicalFormula{
     def eval:Boolean = truth
 }
 
-class Predicate(val truth: Any => Boolean) extends LogicalFormula {
+class Predicate(val p: Any => Boolean) extends LogicalFormula {
     def eval: Boolean = ???
-    def apply(name:Any):Boolean = truth(name)
+    def apply(name:Any):Boolean = p(name)
 }
 
 abstract class TruthFunction extends LogicalFormula{
@@ -39,5 +39,13 @@ class Not(val lf: LogicalFormula) extends OnePlaceTruthFunction {
 
 abstract class TwoPlaceTruthFunction extends TruthFunction {
 
+}
+
+class And(val lhs: LogicalFormula, val rhs: LogicalFormula) extends TwoPlaceTruthFunction {
+    def eval:Boolean = lhs.eval && rhs.eval
+}
+
+class Or(val lhs: LogicalFormula, val rhs: LogicalFormula) extends TwoPlaceTruthFunction {
+    def eval:Boolean = lhs.eval && rhs.eval
 }
 
