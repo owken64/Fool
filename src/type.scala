@@ -3,11 +3,13 @@ package type
 abstract class Type(val t: Int){
     require( t >= 0 , "type is larger equal than 0")
     
-    def in(that:Type) :Boolean
+    def include(that:Type) :Boolean
+    def contains(that: Type):Boolean = include(that)
+    def ni (that: Type): Boolean = include(that) // ni is the reverse of in
 }
 
 abstract class Type0 extends Type(0) {
-    def in(that:Type) : Boolean = false
+    def include(that:Type) : Boolean = false
 }
 
 abstract class Type1 extends Type(1) 
