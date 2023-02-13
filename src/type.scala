@@ -10,6 +10,7 @@ abstract class Type(val t: Int){
 
 abstract class Type0 extends Type(0) {
     def include(that:Type) : Boolean = false
+    def in(that:Type) : Boolean = that include this
 }
 
 abstract class Type1 extends Type(1) 
