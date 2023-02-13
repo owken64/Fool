@@ -33,7 +33,9 @@ abstract class Root extends Irrational
 abstract class Sqrt extends Root
 
 abstract class Rational extends Real
-class RationalEntity(val numer:Int, val denom:Int) extends Rational
+class RationalEntity(val numer:Int, val denom:Int) extends Rational {
+    def getReal(): Double = numer.toDouble / denom.toDouble 
+}
 
 object Rational {
     def apply(numer:Int, denom:Int): Rational = {
@@ -46,6 +48,7 @@ abstract class Integer extends Rational {
 }
 
 class IntegerEntity(val value:Int) extends Integer {
+    def getReal() :Double = value.toDouble
     def toInt: Int = value
 }
 
@@ -58,6 +61,7 @@ object Integer {
 abstract class Natural extends Integer
 class NaturalEntity(val value: Int) extends Natural {
     require( value >= 0)
+    def getReal() : Double = value.toDouble
     def toInt: Int = value
 }
 
@@ -74,6 +78,7 @@ abstract class Prime extends Natural {
 }
 class PrimeEntity(val value:Int) extends Prime{
     require(isPrime(value))
+    def getReal(): Double = value.toDouble
     def toInt: Int = value
 }
 
