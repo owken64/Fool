@@ -1,3 +1,5 @@
+package classicalLogic
+
 
 abstract class LogicalFormula{
     def eval:Boolean

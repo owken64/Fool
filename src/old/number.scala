@@ -1,97 +1,91 @@
-abstract class Num
+abstract class Num extends Type0
 
-def isPrime(a: Int): Boolean = {
-    def _isPrime(cur:Int)(a: Int): Boolean = {
-        if ( cur == a ) true
-        else if (a % cur == 0) false
-        else _isPrime(cur + 1) (a)
-    }
+abstract class PAdicNumber extends Num
 
-    if (a <= 1) false
-    else _isPrime(2)(a)
+abstract class Complex extends Num {
+    def getReal():Double
+    def getImag():Double
+}
+class ComplexEntity(val real:Double, val imag:Double) extends Complex {
+    def getReal() = real
+    def getImag() = imag
 }
 
-case class Prime(val v:Int) extends Num {
-    require( isPrime(v) )
-
-    override def toString: String = v.toString
-    override def equals(other: Any): Boolean = other match {
-        case Prime(that) => this.v == that
-        case _ => false
-    }
+object Complex {
+    def apply(r:Double, i:Double): Complex = new ComplexEntity(r, i)
 }
 
-case class Natural(val v: Int) extends Num {
-    require(v >= 0)
-
-    override def toString: String = v.toString
-    override def equals(other: Any): Boolean = other match {
-        case Natural(that) => this.v == that
-        case _ => false
-    }
+abstract class Real extends Complex {
+    def getImag():Double = 0.0
 }
 
-case class Integer(val v: Int) extends Num{
-
-    override def toString: String = v.toString
-    override def equals(other: Any): Boolean = other match {
-        case Integer(that) => this.v == that
-        case _ => false
-    }
+class RealEntity(val real:Double) extends Real {
+    def getReal():Double = real
 }
 
-case class Rational(val numer: Int, val denom: Int) extends Num{
+object Real {
+    def apply(r:Double): Real = new RealEntity(r)
+}
 
-    override def toString: String = numer + "/" + denom
-    override def equals(other: Any): Boolean = other match {
-        case Rational(that1, that2) => this.denom == that2 && this.numer == that1
-        case _ => false
+abstract class Irrational extends Real
+
+abstract class Root extends Irrational
+abstract class Sqrt extends Root
+
+abstract class Rational extends Real
+class RationalEntity(val numer:Int, val denom:Int) extends Rational {
+    def getReal(): Double = numer.toDouble / denom.toDouble 
+}
+
+object Rational {
+    def apply(numer:Int, denom:Int): Rational = {
+        new RationalEntity(numer, denom)
     }
 }
 
-case class Real(val v: Double) extends Num {
+abstract class Integer extends Rational {
+    def toInt: Int
+}
 
-    override def toString: String = v.toString
-    override def equals(other: Any): Boolean = other match {
-        case Real(that) => this.v == that
-        case _ => false
+class IntegerEntity(val value:Int) extends Integer {
+    def getReal() :Double = value.toDouble
+    def toInt: Int = value
+}
+
+object Integer {
+    def apply(v:Int): Integer = {
+        new IntegerEntity(v)
     }
 }
 
-case class Complex(val real:Double, val imag:Double) extends Num{
+abstract class Natural extends Integer
+class NaturalEntity(val value: Int) extends Natural {
+    require( value >= 0)
+    def getReal() : Double = value.toDouble
+    def toInt: Int = value
+}
 
-    override def toString: String = real + "+" + imag + "i"
-    override def equals(other: Any): Boolean = other match {
-        case Complex(that1, that2) => this.real == that1 && this.imag == that2
-        case _ => false
+object Natural {
+    def apply(v:Int): Natural = {
+        new NaturalEntity(v)
     }
 }
 
-case object Infinity extends Num {
-
-    override def toString: String = "inf"
+abstract class Prime extends Natural {
+    protected def isPrime(v: Int):Boolean = {
+        (v != 1) && (Range(2, v) forall ( x => (v % x != 0)))
+    }
+}
+class PrimeEntity(val value:Int) extends Prime{
+    require(isPrime(value))
+    def getReal(): Double = value.toDouble
+    def toInt: Int = value
 }
 
-case object -Infinity extends Num {
-
-    override def toString: String = "-inf"
+object Prime{
+    def apply(v:Int): Prime = {
+        new PrimeEntity(v)
+    }
 }
 
-
-def addNatural(a: Natural, b: Natural): Natural = new Natural( a.v + b.v )
-def mulNatural(a: Natural, b: Natural): Natural = new Natural( a.v * b.v)
-def addInteger(a: Integer, b: Integer): Integer = new Integer( a.v + b.v )
-def mulInteger(a: Integer, b: Integer): Integer = new Integer( a.v * b.v )
-def subInteger(a: Integer, b: Integer): Integer = new Integer( a.v - b.v )
-def addRational(a: Rational, b: Rational): Rational = new Rational( a.numer * b.denom + b.numer * a.denom, a.denom * b.denom)
-def mulRational(a: Rational, b: Rational): Rational = new Rational( a.numer * b.numer, a.denom * b.denom)
-def subRational(a: Rational, b: Rational): Rational = new Rational( a.numer * b.denom - b.numer * a.denom, a.denom * b.denom)
-def divRational(a: Rational, b: Rational): Rational = new Rational( a.numer * b.denom, a.denom * b.numer)
-def addReal(a: Real, b: Real): Real = new Real(a.v + b.v)
-def mulReal(a: Real, b: Real): Real = new Real(a.v * b.v)
-def subReal(a: Real, b: Real): Real = new Real(a.v - b.v)
-def divReal(a: Real, b: Real): Real = new Real(a.v / b.v)
-def addComplex(a: Complex, b:Complex): Complex = new Complex(a.real + b.real, a.imag + b.imag)
-def mulComplex(a: Complex, b:Complex): Complex = new Complex(a.real * b.real - a.imag * b.imag, a.real * b.imag + a.imag * b.real)
-def subComplex(a: Complex, b:Complex): Complex = new Complex(a.real - b.real, a.imag - b.imag)
-def divComplex(a: Complex, b:Complex): Complex = new Complex((a.real * b.real + a.imag * b.imag) / (b.real * b.real + b.imag * b.imag), ( -a.real * b.imag + a.imag * b.real ) / (b.real * b.real + b.imag * b.imag))
+object Infinity extends Num
