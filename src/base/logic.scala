@@ -25,3 +25,12 @@ class Predicate(n: String, val p: Something => TruthValue) extends LogicalFormul
     def apply(s: Something) : AssignedPredicate  = new AssignedPredicate(n, p, s)
 } 
 
+class AnonymousPredicate(val p: Something=>TruthValue) extends LogicalFormula {
+    val formula: String = "Anon(x)"
+    override def eval: TruthValue = throw new NotAssignedException
+    def apply(s: Something) : AssignedPredicate = new AssignedPredicate("Anon", p, s)
+}
+
+object Predicate {
+    def apply(): AnonymousPredicate = new AnonymousPredicate(x => Unsolved)
+}
