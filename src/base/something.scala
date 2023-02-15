@@ -17,4 +17,12 @@ abstract class Something {
     }
 }
 
-class AnonymousSomething(t: String)
+class AnonymousSomething(t: String) extends Something {
+    val name: Option[String] = None
+    val typeName: String = t
+    val logic: List[LogicalFormula] = Nil 
+}
+
+object Something {
+    def apply(t:String): Something = new AnonymousSomething(t)
+}
