@@ -3,13 +3,15 @@ package logic.firstOrderPredicateLogic
 package syntax {
 
     abstract class Term
-    abstract class LogicalFormula {
-        val semantic: Boolean
+    abstract class LogicalFormula
+
+    class Name(val name:String) extends Term {
+        override def toString(): String = name
     }
 
-    class Name extends Term
-
-    class Variable extends Term
+    class Variable(val ch: Char) extends Term {
+        override def toString(): String = ch.toString
+    }
 
     class AppliedOperator(val n: Int)(val t: Seq[Term]) extends Term 
 
@@ -24,7 +26,6 @@ package syntax {
     class AtomicPredicate(n: Int)(p: Seq[Term] => Boolean)(t: Seq[Term]) extends LogicalFormula {
         require( n >= 0)
         require( t.length == n)
-        val semantic: Boolean = p(t)
     }
 
     class Predicate(val n:Int)(val p: Seq[Term] => Boolean) {
@@ -35,35 +36,33 @@ package syntax {
         }
     }
 
-    class AppliedTruthFunction(n:Int)(f: Seq[LogicalFormula]=>Boolean)(lf: Seq[LogicalFormula]) extends LogicalFormula{
+    class AppliedTruthFunction(n:Int)(lf: Seq[LogicalFormula]) extends LogicalFormula{
         require( n >= 0)
         require( lf.length == n)
-        val semantic: Boolean = f(lf)
     }
-    abstract class TruthFunction(val n: Int)(val f: Seq[LogicalFormula] => Boolean) {
+    abstract class TruthFunction(val n: Int) {
         require( n >= 0)
         def apply(lf: Seq[LogicalFormula]): AppliedTruthFunction = {
             require( lf.length == n)
-            new AppliedTruthFunction(n)(f)(lf)
+            new AppliedTruthFunction(n)(lf)
         }
     } 
 
-    abstract class ZeroPlaceTruthFunction(f: Seq[LogicalFormula] => Boolean) extends TruthFunction(1)(f)
-    object True extends ZeroPlaceTruthFunction( _=>true ) 
-    object False extends ZeroPlaceTruthFunction(_=>false)
+    abstract class ZeroPlaceTruthFunction extends TruthFunction(1)
+    object True extends ZeroPlaceTruthFunction
+    object False extends ZeroPlaceTruthFunction
 
-    abstract class OnePlaceTruthFunction(f: Seq[LogicalFormula] => Boolean) extends TruthFunction(1)(f)
-    object Not extends OnePlaceTruthFunction( x => !x.head.semantic)
+    abstract class OnePlaceTruthFunction extends TruthFunction(1)
+    object Not extends OnePlaceTruthFunction
 
-    abstract class TwoPlaceTruthFunction(f: Seq[LogicalFormula] => Boolean) extends TruthFunction(2)(f)
-    object And extends TwoPlaceTruthFunction( x => x match  { case a :: b :: tail => a.semantic & b.semantic})
-    object Or extends TwoPlaceTruthFunction( x => x match  { case a :: b :: tail => a.semantic | b.semantic})
-    object IfThen extends TwoPlaceTruthFunction( x => x match  { case a :: b :: tail => !(a.semantic & !b.semantic)})
-    object Iff extends TwoPlaceTruthFunction( x => x match  { case a :: b :: tail => a.semantic == b.semantic})
+    abstract class TwoPlaceTruthFunction extends TruthFunction(2)
+    object And extends TwoPlaceTruthFunction
+    object Or extends TwoPlaceTruthFunction
+    object IfThen extends TwoPlaceTruthFunction
+    object Iff extends TwoPlaceTruthFunction
 
-    class AppliedQuantification(v:Variable)(lf: LogicalFormula) extends LogicalFormula {
-        val semantic: Boolean = throw new NotImplementedException
-    }
+    class AppliedQuantification(v:Variable)(lf: LogicalFormula) extends LogicalFormula 
+
     abstract class Quantification {
         def apply(v: Variable, lf: LogicalFormula) : AppliedQuantification = {
             new AppliedQuantification(v)(lf)
@@ -75,5 +74,14 @@ package syntax {
 
 package semantics{
 
-    
+    class Entity
+
+    class 領域
+
+    class 対応付け
+
+    class Structure(D: 領域, F: 対応付け)
+
+    class Assignment
+
 }
