@@ -1,9 +1,9 @@
 package logic.firstOrderPredicateLogic
 
-package syntax {
+import logic.LogicalFormula
+import logic.Term
 
-    abstract class Term
-    abstract class LogicalFormula
+package syntax {
 
     class Name(val name:String) extends Term {
         override def toString(): String = name
