@@ -9,8 +9,8 @@ package syntax {
         override def toString(): String = name
     }
 
-    class Variable(val ch: Char) extends Term {
-        override def toString(): String = ch.toString
+    class Variable(val name: Char) extends Term {
+        override def toString(): String = name.toString
     }
 
     class AppliedOperator(val n: Int)(val t: Seq[Term]) extends Term 
@@ -62,6 +62,8 @@ package syntax {
     object Iff extends TwoPlaceTruthFunction
 
     class AppliedQuantification(v:Variable)(lf: LogicalFormula) extends LogicalFormula 
+    class AppliedAll(v:Variable)(lf: LogicalFormula) extends AppliedQuantification(v)(lf)
+    class AppliedExists(v:Variable)(lf: LogicalFormula) extends AppliedQuantification(v)(lf)
 
     abstract class Quantification {
         def apply(v: Variable, lf: LogicalFormula) : AppliedQuantification = {
@@ -70,6 +72,12 @@ package syntax {
     }
     object All extends Quantification
     object Exists extends Quantification
+
+    def fv(t: Term) : Set[Variable]
+    def fv(lf:LogicalFormula): Set[Variable]
+    def bv(t: Term) : Set[Variable]
+    def bv(lf:LogicalFormula): Set[Variable]
+    def SubF(lf:LogicalFormula) : Set[Term]
 }
 
 package semantics{
